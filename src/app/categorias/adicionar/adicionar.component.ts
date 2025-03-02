@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Store } from '@ngrx/store';
 import { CategoryService } from '../../services/category.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -27,15 +26,16 @@ import { MatButtonModule } from '@angular/material/button';
 export class CategoriasAdicionarComponent implements OnInit {
   categoryName: string;
 
-  constructor(private categoryService: CategoryService, private store: Store) {
+  constructor(private categoryService: CategoryService) {
     this.categoryName = '';
   }
 
   onAdd() {
-    this.categoryService.createCategory({ name: this.categoryName })
-    .subscribe((data) => {
-      console.log("Adicionado!", data);
-    });
+    this.categoryService
+      .createCategory({ name: this.categoryName })
+      .subscribe((data) => {
+        console.log('Adicionado!', data);
+      });
   }
 
   ngOnInit(): void {}
