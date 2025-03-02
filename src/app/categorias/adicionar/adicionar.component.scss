@@ -1,0 +1,11 @@
+.add {
+  &__title {
+    padding: 1rem;
+  }
+  &__container {
+    margin: 1rem auto;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+  }
+}

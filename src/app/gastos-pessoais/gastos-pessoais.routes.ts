@@ -1,10 +1,8 @@
 import { Routes } from '@angular/router';
+import { GastosPessoaisListaComponent } from './lista/lista.component';
+import { GastosAdicionarComponent } from './adicionar/adicionar.component';
 
-import { AdicionarComponent } from './adicionar/adicionar.component';
-import { ListaComponent } from './lista/lista.component';
-
-
-export const GASTOS_PESSOIS: Routes = [
-  { path: 'lista', component: ListaComponent },
-  { path: 'adicionar', component: AdicionarComponent }
-]
+export const GASTOS_PESSOAIS: Routes = [
+  { path: 'lista', component: GastosPessoaisListaComponent },
+  { path: 'adicionar', component: GastosAdicionarComponent },
+];

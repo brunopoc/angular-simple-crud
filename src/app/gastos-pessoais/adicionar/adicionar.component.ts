@@ -5,9 +5,9 @@ import { MatListModule } from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card';
 
 @Component({
-  selector: 'app-adicionar',
+  selector: 'gastos-pessoais-adicionar',
   imports: [MatInputModule, MatButtonModule, MatListModule, MatCardModule],
   templateUrl: './adicionar.component.html',
   styleUrl: './adicionar.component.scss',
 })
-export class AdicionarComponent {}
+export class GastosAdicionarComponent {}

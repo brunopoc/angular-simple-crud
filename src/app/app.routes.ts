@@ -7,7 +7,12 @@ export const routes: Routes = [
     path: 'gastos-pessoais',
     loadChildren: () =>
       import('./gastos-pessoais/gastos-pessoais.routes').then(
-        (r) => r.GASTOS_PESSOIS
+        (r) => r.GASTOS_PESSOAIS
       ),
+  },
+  {
+    path: 'categorias',
+    loadChildren: () =>
+      import('./categorias/categorias.routes').then((r) => r.CATEGORIAS),
   },
 ];

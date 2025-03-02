@@ -5,7 +5,7 @@ import { Category } from '../models/category.model';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
-  private apiUrl = 'https://github.com/adelbs/it-api-case/categories';
+  private apiUrl = 'http://localhost:3200/api/v1/categoria';
 
   constructor(private http: HttpClient) {}
 

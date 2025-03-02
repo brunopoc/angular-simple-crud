@@ -17,7 +17,7 @@
         Action
       </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <button mat-icon-button>
+        <button mat-icon-button (click)="onRemove(element.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-cell>

@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { CategoryComponent } from '../../shared/components/category/category.component';
 
 @Component({
-  selector: 'app-lista',
-  imports: [CategoryComponent],
+  selector: 'gastos-pessoais-lista',
+  imports: [],
   templateUrl: './lista.component.html',
-  styleUrl: './lista.component.scss'
+  styleUrl: './lista.component.scss',
 })
-export class ListaComponent {
-
-}
+export class GastosPessoaisListaComponent {}
