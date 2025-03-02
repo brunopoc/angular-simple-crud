@@ -13,11 +13,9 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { ErrorComponent } from '../../shared/components/snackbar/error/error.component';
-import { SuccessComponent } from '../../shared/components/snackbar/success/success.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, take, throwError } from 'rxjs';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-categorias-lista',
@@ -37,34 +35,15 @@ export class CategoriasListaComponent implements OnInit, AfterViewInit {
   categories: Category[];
   displayedColumns: string[] = ['name', 'action'];
   dataSource: MatTableDataSource<Category>;
-  private durationInSeconds = 5;
-  private _snackBar = inject(MatSnackBar);
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private categoryService: CategoryService) {
+  constructor(
+    private categoryService: CategoryService,
+    private notificationService: NotificationService
+  ) {
     this.categories = [];
     this.dataSource = new MatTableDataSource(this.categories);
-  }
-
-  openSnackBar(type: 'ERROR' | 'SUCCESS') {
-    if (type == 'ERROR') {
-      const snackBarRef = this._snackBar.openFromComponent(ErrorComponent, {
-        duration: this.durationInSeconds * 1000,
-        panelClass: ['notification-bg__error'],
-      });
-
-      snackBarRef.instance.message = 'Ocorreu um erro na deleção da categoria';
-    }
-
-    if (type == 'SUCCESS') {
-      const snackBarRef = this._snackBar.openFromComponent(SuccessComponent, {
-        duration: this.durationInSeconds * 1000,
-        panelClass: ['notification-bg__success'],
-      });
-
-      snackBarRef.instance.message = 'Categoria deletada com sucesso!';
-    }
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -77,7 +56,10 @@ export class CategoriasListaComponent implements OnInit, AfterViewInit {
       );
     }
 
-    this.openSnackBar('ERROR');
+    this.notificationService.open(
+      'Ocorreu um erro na deleção da categoria',
+      'ERROR'
+    );
 
     return throwError(
       () => new Error('Something bad happened; please try again later.')
@@ -100,7 +82,10 @@ export class CategoriasListaComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.categories = this.categories.filter((e) => e.id !== id);
         this.dataSource.data = this.categories;
-        this.openSnackBar('SUCCESS');
+        this.notificationService.open(
+          'Categoria deletada com sucesso!',
+          'SUCCESS'
+        );
       });
   }
 
