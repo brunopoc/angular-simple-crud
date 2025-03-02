@@ -1,0 +1,55 @@
+.layout {
+    overflow: visible;
+    &__sidenav {
+      width: 250px;
+      height: 100vh;
+    }
+
+    &__sidenav-list {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        gap: 10px;
+    }
+  }
+  
+  .navbar {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    width: 100%;
+  
+    &__title {
+      font-weight: bold;
+      color: white;
+    }
+  
+    &__spacer {
+      flex-grow: 1;
+    }
+  
+    &__menu {
+      display: none;
+      @media (min-width: 768px) {
+        display: flex;
+      }
+    }
+  
+    &__menu-toggle {
+      display: block;
+
+      @media (min-width: 768px) {
+        display: none;
+      }
+    }
+  
+    &__profile {
+      display: flex;
+      align-items: center;
+    }
+  }
+  
+  .spacer {
+    flex-grow: 1;
+  }
+  
