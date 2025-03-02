@@ -3,9 +3,20 @@
   <mat-card-content>
     <div class="add__container">
       <mat-form-field>
-        <input matInput placeholder="Item do Gasto" [(ngModel)]="categoryName" />
+        <input
+          matInput
+          placeholder="Item do Gasto"
+          [(ngModel)]="categoryName"
+        />
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="onAdd()">Adicionar</button>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="loadingService.loading$ | async"
+        (click)="onAdd()"
+      >
+        Adicionar
+      </button>
     </div>
   </mat-card-content>
 </mat-card>
