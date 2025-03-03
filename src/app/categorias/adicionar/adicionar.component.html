@@ -1,18 +1,25 @@
-<mat-card>
+<mat-card data-test-id="categoria-adicionar-card">
   <mat-card-title><h2 class="add__title">Adicionar Gasto</h2></mat-card-title>
   <mat-card-content>
-    <form [formGroup]="categoryForm" class="add__container" (ngSubmit)="onSubmit()">
-      <mat-form-field>
+    <form
+      [formGroup]="categoryForm"
+      class="add__container"
+      (ngSubmit)="onSubmit()"
+      data-test-id="categoria-adicionar-form"
+    >
+      <mat-form-field data-test-id="categoria-adicionar-nome-field">
         <input
           matInput
           placeholder="Item do Gasto"
           formControlName="name"
+          data-test-id="categoria-adicionar-nome-input"
         />
       </mat-form-field>
       <button
         mat-raised-button
         color="primary"
         [disabled]="(loadingService.loading$ | async) || !isSubmitAvailable"
+        data-test-id="categoria-adicionar-submit-button"
       >
         Adicionar
       </button>

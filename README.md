@@ -88,7 +88,7 @@ Para executar os testes unitários, utilize o seguinte comando:
 ng test
 ```
 
-Foram implementados testes unitários para os serviços e componentes principais, utilizando Karma e Jasmine. A cobertura de testes é de [X%]. Uma evolução em termos de qualidade é contar com apoio de ferramentas que permita testes end-to-end utilizando de base ferramentas como o [Cypress](https://docs.cypress.io/app/end-to-end-testing/writing-your-first-end-to-end-test).
+Foram implementados testes unitários para os serviços e componentes principais, utilizando Karma e Jasmine. A cobertura de testes é de [96%]. Uma evolução em termos de qualidade é contar com apoio de ferramentas que permita testes end-to-end utilizando de base ferramentas como o [Cypress](https://docs.cypress.io/app/end-to-end-testing/writing-your-first-end-to-end-test).
 
 Outra sugestão a ser estudada como evolução é a possíbilidade de documentar os componentes da aplicação em um sistema como o [Storybook](https://storybook.js.org/tutorials/intro-to-storybook/angular/pt/get-started)
 

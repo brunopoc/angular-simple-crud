@@ -1,9 +1,10 @@
-<span matSnackBarLabel>{{ message }}</span>
-<span matSnackBarActions>
+<span matSnackBarLabel data-test-id="notification-message">{{ message }}</span>
+<span matSnackBarActions data-test-id="notification-actions">
   <button
     mat-button
     matSnackBarAction
     (click)="snackBarRef.dismissWithAction()"
+    data-test-id="notification-close-button"
   >
     <mat-icon>close</mat-icon>
   </button>

@@ -13,9 +13,10 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { catchError, take, Subject, takeUntil } from 'rxjs';
+import { catchError, take, Subject, takeUntil, BehaviorSubject } from 'rxjs';
 import { NotificationService } from '@services/notification.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
+import { LoadingService } from '@services/loading.service';
 
 @Component({
   selector: 'app-categorias-lista',
@@ -34,9 +35,11 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 export class CategoriasListaComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  categories: Category[];
+  private categoriesSubject = new BehaviorSubject<Category[]>([]);
+  categories$ = this.categoriesSubject.asObservable();
   displayedColumns: string[] = ['name', 'action'];
-  dataSource: MatTableDataSource<Category>;
+  dataSource = new MatTableDataSource<Category>();
+  loadListFailed: boolean = false;
   private destroy$ = new Subject<void>();
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -44,18 +47,29 @@ export class CategoriasListaComponent
   constructor(
     private categoryService: CategoryService,
     private notificationService: NotificationService,
-    private errorHandlerService: ErrorHandlerService
-  ) {
-    this.categories = [];
-    this.dataSource = new MatTableDataSource(this.categories);
-  }
+    private errorHandlerService: ErrorHandlerService,
+    protected loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
+    this.onLoadLista();
+  }
+
+  onLoadLista(): void {
+    this.loadingService.loadingOn();
     this.categoryService
       .getCategories()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          this.loadListFailed = true;
+          return this.errorHandlerService.handleError(error);
+        })
+      )
       .subscribe((categories) => {
-        this.updateDataSource(categories);
+        this.loadingService.loadingOff();
+        this.categoriesSubject.next(categories);
+        this.dataSource.data = categories;
       });
   }
 
@@ -65,6 +79,7 @@ export class CategoriasListaComponent
   }
 
   onRemove(id: string) {
+    this.loadingService.loadingOn();
     this.categoryService
       .deleteCategory(id)
       .pipe(
@@ -72,8 +87,9 @@ export class CategoriasListaComponent
         catchError((error) => this.errorHandlerService.handleError(error))
       )
       .subscribe(() => {
-        this.categories = this.categories.filter((e) => e.id !== id);
-        this.updateDataSource(this.categories);
+        this.loadingService.loadingOff();
+        this.categoriesSubject.next(this.categoriesSubject.value.filter(e => e.id !== id));
+        this.updateDataSource();
         this.notificationService.open(
           'Categoria deletada com sucesso!',
           'SUCCESS'
@@ -85,8 +101,8 @@ export class CategoriasListaComponent
     this.dataSource.sort = this.sort;
   }
 
-  private updateDataSource(categories: Category[]): void {
-    this.categories = categories;
-    this.dataSource.data = categories;
+  private updateDataSource(): void {
+    this.dataSource.data = this.categoriesSubject.value;
+    this.dataSource.sort = this.sort;
   }
 }

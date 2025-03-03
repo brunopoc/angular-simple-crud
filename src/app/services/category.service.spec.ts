@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import {
   HttpTestingController,
-  provideHttpClientTesting,
+  HttpClientTestingModule,
 } from '@angular/common/http/testing';
 import { CategoryService } from './category.service';
 import { Category } from '../models/category.model';
@@ -14,7 +14,8 @@ describe('CategoryService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CategoryService, provideHttpClientTesting()],
+      imports: [HttpClientTestingModule],
+      providers: [CategoryService],
     });
     service = TestBed.inject(CategoryService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -72,11 +73,11 @@ describe('CategoryService', () => {
 
   it('should delete a category', () => {
     service.deleteCategory('1').subscribe((response) => {
-      expect(response).toBeUndefined();
+      expect(response).toBeNull();
     });
 
     const req = httpMock.expectOne(`${apiUrl}/1`);
     expect(req.request.method).toBe('DELETE');
-    req.flush(null);
+    req.flush(null, { status: 204, statusText: 'No Content' });
   });
 });

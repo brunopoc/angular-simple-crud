@@ -1,15 +1,30 @@
-<mat-table [dataSource]="dataSource" matSort>
+<mat-table
+  [dataSource]="dataSource"
+  matSort
+  *ngIf="!(loadingService.loading$ | async) && !loadListFailed"
+  data-test-id="categoria-tabela"
+>
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Nome </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+    <mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      data-test-id="categoria-coluna-nome"
+    >
+      Nome
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" data-test-id="categoria-nome">
+      {{ element.name }}
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="action">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
-      Action
-    </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Ação </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <button mat-icon-button (click)="onRemove(element.id)">
+      <button
+        mat-icon-button
+        (click)="onRemove(element.id)"
+        data-test-id="categoria-remover"
+      >
         <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>
@@ -19,8 +34,27 @@
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
 
+<div
+  class="categoria-lista__error"
+  *ngIf="loadListFailed"
+  data-test-id="categoria-erro"
+>
+  <span class="categoria-lista__error-msg"
+    >Ocorreu um erro ao tentar carregar a lista, tente novamente mais tarde
+  </span>
+  <mat-icon
+    aria-hidden="false"
+    aria-label="Ocorreu um erro ao carregar"
+    fontIcon="error"
+  ></mat-icon>
+</div>
+
 <div class="add-button-container">
-  <a routerLinkActive="active" routerLink="/categorias/adicionar">
+  <a
+    routerLinkActive="active"
+    routerLink="/categorias/adicionar"
+    data-test-id="categoria-adicionar"
+  >
     <button mat-fab aria-label="Adicionar uma nova categoria">
       <mat-icon>add</mat-icon>
     </button>

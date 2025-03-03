@@ -2,32 +2,74 @@
   class="layout"
   [hasBackdrop]="true"
   (backdropClick)="sidenav.close()"
+  data-test-id="header-sidenav-container"
 >
   <mat-sidenav
     #sidenav
     mode="over"
     class="layout__sidenav"
     (backdropClick)="sidenav.close()"
+    data-test-id="header-sidenav"
   >
-    <mat-nav-list class="layout__sidenav-list">
-      <a routerLinkActive="active" routerLink="/categorias/lista"><button mat-button>Categorias</button></a>
-      <a routerLinkActive="active" routerLink="/gastos-pessoais/lista"><button mat-button>Gastos Pessoais</button></a>
+    <mat-nav-list
+      class="layout__sidenav-list"
+      data-test-id="header-sidenav-list"
+    >
+      <a
+        routerLinkActive="active"
+        routerLink="/categorias/lista"
+        data-test-id="header-sidenav-categorias-link"
+      >
+        <button mat-button data-test-id="header-sidenav-categorias-button">
+          Categorias
+        </button>
+      </a>
+      <a
+        routerLinkActive="active"
+        routerLink="/gastos-pessoais/lista"
+        data-test-id="header-sidenav-gastos-link"
+      >
+        <button mat-button data-test-id="header-sidenav-gastos-button">
+          Gastos Pessoais
+        </button>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-toolbar class="navbar">
-    <a routerLinkActive="active" routerLink="/"><span class="navbar__title">Gastos Pessoais</span></a>
+  <mat-toolbar class="navbar" data-test-id="header-toolbar">
+    <a routerLinkActive="active" routerLink="/" data-test-id="header-home-link">
+      <span class="navbar__title" data-test-id="header-navbar-title"
+        >Gastos Pessoais</span
+      >
+    </a>
     <span class="navbar__spacer"></span>
 
-    <div class="navbar__menu">
-      <a routerLinkActive="active" routerLink="/categorias/lista"><button mat-button>Categorias</button></a>
-      <a routerLinkActive="active" routerLink="/gastos-pessoais/lista"><button mat-button>Gastos Pessoais</button></a>
+    <div class="navbar__menu" data-test-id="header-navbar-menu">
+      <a
+        routerLinkActive="active"
+        routerLink="/categorias/lista"
+        data-test-id="header-navbar-categorias-link"
+      >
+        <button mat-button data-test-id="header-navbar-categorias-button">
+          Categorias
+        </button>
+      </a>
+      <a
+        routerLinkActive="active"
+        routerLink="/gastos-pessoais/lista"
+        data-test-id="header-navbar-gastos-link"
+      >
+        <button mat-button data-test-id="header-navbar-gastos-button">
+          Gastos Pessoais
+        </button>
+      </a>
     </div>
 
     <button
       mat-icon-button
       class="navbar__menu-toggle"
       (click)="sidenav.toggle()"
+      data-test-id="header-menu-toggle"
     >
       <mat-icon>menu</mat-icon>
     </button>
@@ -35,8 +77,9 @@
     <a
       target="_blank"
       href="https://www.linkedin.com/in/bruno-cabral-05422884/"
+      data-test-id="header-linkedin-link"
     >
-      <button mat-icon-button>
+      <button mat-icon-button data-test-id="header-linkedin-button">
         <mat-icon>person</mat-icon>
       </button>
     </a>
