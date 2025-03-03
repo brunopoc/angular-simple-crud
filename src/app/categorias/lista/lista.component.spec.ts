@@ -25,6 +25,7 @@ describe('CategoriasListaComponent', () => {
     categoryServiceMock = jasmine.createSpyObj('CategoryService', [
       'getCategories',
       'deleteCategory',
+      'refreshCategories'
     ]);
     notificationServiceMock = jasmine.createSpyObj('NotificationService', [
       'open',
@@ -86,7 +87,7 @@ describe('CategoriasListaComponent', () => {
     expect(component['categoriesSubject'].value).toEqual(mockCategories);
   });
 
-  it('should show error message when loadListFailed is true', () => {
+  it('should show error message when isListEmpty is true', () => {
     categoryServiceMock.getCategories.and.returnValue(
       throwError(() => new Error('Load failed'))
     );
@@ -108,6 +109,7 @@ describe('CategoriasListaComponent', () => {
 
     categoryServiceMock.getCategories.and.returnValue(of(mockCategories));
     categoryServiceMock.deleteCategory.and.returnValue(of(void 0));
+    categoryServiceMock.refreshCategories.and.returnValue();
 
     fixture.detectChanges();
 

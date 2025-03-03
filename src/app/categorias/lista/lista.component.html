@@ -1,7 +1,7 @@
 <mat-table
   [dataSource]="dataSource"
   matSort
-  *ngIf="!(loadingService.loading$ | async) && !loadListFailed"
+  *ngIf="!(loadingService.loading$ | async) && !isListEmpty"
   data-test-id="categoria-tabela"
 >
   <ng-container matColumnDef="name">
@@ -36,7 +36,7 @@
 
 <div
   class="categoria-lista__error"
-  *ngIf="loadListFailed"
+  *ngIf="!(loadingService.loading$ | async) && isListEmpty"
   data-test-id="categoria-erro"
 >
   <span class="categoria-lista__error-msg"
@@ -50,12 +50,12 @@
 </div>
 
 <div class="add-button-container">
-  <a
-    routerLinkActive="active"
-    routerLink="/categorias/adicionar"
-    data-test-id="categoria-adicionar"
-  >
-    <button mat-fab aria-label="Adicionar uma nova categoria">
+  <a routerLink="/categorias/adicionar" data-test-id="categoria-adicionar">
+    <button
+      mat-fab
+      aria-label="Adicionar uma nova categoria"
+      [disabled]="(loadingService.loading$ | async) || isListEmpty"
+    >
       <mat-icon>add</mat-icon>
     </button>
   </a>

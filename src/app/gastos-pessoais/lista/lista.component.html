@@ -1,1 +1,108 @@
-Gasto Listas Works
+<mat-table
+  [dataSource]="dataSource"
+  matSort
+  *ngIf="!(loadingService.loading$ | async) && !isListEmpty"
+  data-test-id="gastos-pessoais-tabela"
+>
+  <ng-container matColumnDef="description">
+    <mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      data-test-id="gastos-pessoais-coluna-description"
+    >
+      Descrição
+    </mat-header-cell>
+    <mat-cell
+      *matCellDef="let element"
+      data-test-id="gastos-pessoais-description"
+    >
+      {{ element.description }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="value">
+    <mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      data-test-id="gastos-pessoais-coluna-value"
+    >
+      Valor
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" data-test-id="gastos-pessoais-value">
+      {{ element.value | currency : "BRL" }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      data-test-id="gastos-pessoais-coluna-date"
+    >
+      Data
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" data-test-id="gastos-pessoais-date">
+      {{ element.date }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="categoriaNome">
+    <mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      data-test-id="gastos-pessoais-coluna-category"
+    >
+      Categoria
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" data-test-id="gastos-pessoais-category">
+      {{ element.categoriaNome }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Ação </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button
+        mat-icon-button
+        (click)="onRemove(element.id)"
+        data-test-id="gastos-pessoais-remover"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
+
+<div
+  class="gastos-pessoais-lista__error"
+  *ngIf="isListEmpty"
+  data-test-id="gastos-pessoais-erro"
+>
+  <span class="gastos-pessoais-lista__error-msg"
+    >Ocorreu um erro ao tentar carregar a lista, tente novamente mais tarde
+  </span>
+  <mat-icon
+    aria-hidden="false"
+    aria-label="Ocorreu um erro ao carregar"
+    fontIcon="error"
+  ></mat-icon>
+</div>
+
+<div class="add-button-container">
+  <a
+    routerLinkActive="active"
+    routerLink="/gastos-pessoais/adicionar"
+    data-test-id="gastos-pessoais-adicionar"
+  >
+    <button
+      mat-fab
+      aria-label="Adicionar uma nova gastos-pessoais"
+      [disabled]="(loadingService.loading$ | async) || isListEmpty"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </a>
+</div>

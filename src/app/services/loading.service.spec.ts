@@ -25,7 +25,7 @@ describe('LoadingService', () => {
   });
 
   it('should set loading to false when loadingOff is called', (done) => {
-    service.loadingOn(); // Set loading to true first
+    service.loadingOn();
     service.loading$.subscribe((loading) => {
       if (!loading) {
         expect(loading).toBeFalse();

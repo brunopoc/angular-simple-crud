@@ -102,7 +102,6 @@ describe('CategoriasAdicionarComponent', () => {
     input.nativeElement.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    // Corrige o mock para retornar um Observable<Category>
     categoryServiceMock.createCategory.and.returnValue(
       of({ id: '1', name: 'Test Category' })
     );

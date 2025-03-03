@@ -12,8 +12,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { catchError, take, Subject, takeUntil, BehaviorSubject } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { catchError, take, Subject, takeUntil, BehaviorSubject, shareReplay } from 'rxjs';
 import { NotificationService } from '@services/notification.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LoadingService } from '@services/loading.service';
@@ -29,7 +29,6 @@ import { LoadingService } from '@services/loading.service';
     MatSortModule,
     MatIconModule,
     RouterLink,
-    RouterLinkActive,
   ],
 })
 export class CategoriasListaComponent
@@ -39,7 +38,7 @@ export class CategoriasListaComponent
   categories$ = this.categoriesSubject.asObservable();
   displayedColumns: string[] = ['name', 'action'];
   dataSource = new MatTableDataSource<Category>();
-  loadListFailed: boolean = false;
+  isListEmpty: boolean = true;
   private destroy$ = new Subject<void>();
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -60,16 +59,15 @@ export class CategoriasListaComponent
     this.categoryService
       .getCategories()
       .pipe(
+        shareReplay(1),
         takeUntil(this.destroy$),
-        catchError((error) => {
-          this.loadListFailed = true;
-          return this.errorHandlerService.handleError(error);
-        })
       )
       .subscribe((categories) => {
         this.loadingService.loadingOff();
         this.categoriesSubject.next(categories);
         this.dataSource.data = categories;
+
+        this.isListEmpty = this.categoriesSubject.value.length <= 0;
       });
   }
 
@@ -90,6 +88,7 @@ export class CategoriasListaComponent
         this.loadingService.loadingOff();
         this.categoriesSubject.next(this.categoriesSubject.value.filter(e => e.id !== id));
         this.updateDataSource();
+        this.categoryService.refreshCategories();
         this.notificationService.open(
           'Categoria deletada com sucesso!',
           'SUCCESS'

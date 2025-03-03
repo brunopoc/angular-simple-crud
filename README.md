@@ -36,6 +36,8 @@ Antes de começar, certifique-se de ter instalado em seu ambiente:
 
 - [Docker](https://www.docker.com/get-started)
 - [Docker Compose](https://docs.docker.com/compose/install/) (caso necessário)
+- Tenha a aplicação backend rodando no seu ambiente: [it-api-case](https://github.com/adelbs/it-api-case) 
+- Certifique-se de estar com o endpoint do backend corretamente configurado no src\environments\environment.development.ts
 
 1.  **Construa a imagem Docker**
 ```sh
@@ -88,7 +90,7 @@ Para executar os testes unitários, utilize o seguinte comando:
 ng test
 ```
 
-Foram implementados testes unitários para os serviços e componentes principais, utilizando Karma e Jasmine. A cobertura de testes é de [96%]. Uma evolução em termos de qualidade é contar com apoio de ferramentas que permita testes end-to-end utilizando de base ferramentas como o [Cypress](https://docs.cypress.io/app/end-to-end-testing/writing-your-first-end-to-end-test).
+Foram implementados testes unitários para os serviços e componentes principais, utilizando Karma e Jasmine. A cobertura de testes é de [97%]. Uma evolução em termos de qualidade é contar com apoio de ferramentas que permita testes end-to-end utilizando de base ferramentas como o [Cypress](https://docs.cypress.io/app/end-to-end-testing/writing-your-first-end-to-end-test).
 
 Outra sugestão a ser estudada como evolução é a possíbilidade de documentar os componentes da aplicação em um sistema como o [Storybook](https://storybook.js.org/tutorials/intro-to-storybook/angular/pt/get-started)
 

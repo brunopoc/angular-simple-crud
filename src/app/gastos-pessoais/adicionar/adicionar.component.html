@@ -1,11 +1,64 @@
-<mat-card>
+<mat-card data-test-id="gastos-pessoais-adicionar-card">
   <mat-card-title><h2 class="add__title">Adicionar Gasto</h2></mat-card-title>
   <mat-card-content>
-    <div class="add__container">
-      <mat-form-field>
-        <input matInput placeholder="Item do Gasto" />
+    <form
+      [formGroup]="gastosPessoaisForm"
+      class="add__container"
+      (ngSubmit)="onSubmit()"
+      data-test-id="gastos-pessoais-adicionar-form"
+    >
+      <mat-form-field data-test-id="gastos-pessoais-adicionar-descricao-field">
+        <input
+          matInput
+          placeholder="Descrição do Gasto"
+          formControlName="description"
+          data-test-id="gastos-pessoais-adicionar-descricao-input"
+        />
       </mat-form-field>
-      <button mat-raised-button color="primary">Adicionar</button>
-    </div>
+
+      <mat-form-field>
+        <mat-label>Categoria do Gasto</mat-label>
+        <mat-select
+          formControlName="idCategoria"
+          data-test-id="gastos-pessoais-adicionar-categoria-select"
+        >
+          @for (category of categories$ | async; track category) {
+          <mat-option [value]="category.id">{{ category.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field data-test-id="gastos-pessoais-adicionar-data-field">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          placeholder="Data do Gasto"
+          formControlName="date"
+          data-test-id="gastos-pessoais-adicionar-data-input"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field data-test-id="gastos-pessoais-adicionar-valor-field">
+        <input
+          matInput
+          type="number"
+          placeholder="Valor do Gasto"
+          formControlName="value"
+          data-test-id="gastos-pessoais-adicionar-valor-input"
+          [value]="gastosPessoaisForm.get('value')?.value"
+        />
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="(loadingService.loading$ | async) || !isSubmitAvailable"
+        data-test-id="gastos-pessoais-adicionar-submit-button"
+      >
+        Adicionar
+      </button>
+    </form>
   </mat-card-content>
 </mat-card>

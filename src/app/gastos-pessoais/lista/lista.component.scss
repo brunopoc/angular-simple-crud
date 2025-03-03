@@ -1,0 +1,32 @@
+.add-button-container {
+  position: fixed;
+  right: 2rem;
+  bottom: 1rem;
+}
+
+.mat-column-action {
+  max-width: 6rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.gastos-pessoais-lista {
+  &__error {
+    color: white;
+    background-color: red;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__error-msg {
+    max-width: 12rem;
+
+    @media (min-width: 768px) {
+      max-width: fit-content;
+    }
+  }
+}

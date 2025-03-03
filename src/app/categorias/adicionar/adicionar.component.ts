@@ -83,7 +83,10 @@ export class CategoriasAdicionarComponent implements OnInit, OnDestroy {
           );
           this.router.navigate(['categorias', 'lista']);
         },
-        complete: () => this.loadingService.loadingOff(),
+        complete: () => {
+          this.categoryService.refreshCategories();
+          this.loadingService.loadingOff();
+        },
       });
   }
 }
