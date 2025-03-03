@@ -1,17 +1,23 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CategoryService } from '../../services/category.service';
+import { CategoryService } from '@services/category.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { catchError, take, throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { LoadingService } from '../../services/loading.service';
+import { catchError, take, Subject, takeUntil } from 'rxjs';
+import { LoadingService } from '@services/loading.service';
 import { Router } from '@angular/router';
-import { NotificationService } from '../../services/notification.service';
+import { NotificationService } from '@services/notification.service';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ErrorHandlerService } from '@services/error-handler.service';
 
 @Component({
   selector: 'app-categorias-adicionar',
@@ -26,49 +32,58 @@ import { NotificationService } from '../../services/notification.service';
     MatFormFieldModule,
     FormsModule,
     MatButtonModule,
+    ReactiveFormsModule,
   ],
 })
-export class CategoriasAdicionarComponent {
-  protected categoryName: string;
+export class CategoriasAdicionarComponent implements OnInit, OnDestroy {
+  protected categoryForm: FormGroup;
   private readonly router = inject(Router);
+  private fb = inject(FormBuilder);
+  protected isSubmitAvailable: boolean = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private categoryService: CategoryService,
     private notificationService: NotificationService,
-    protected loadingService: LoadingService
+    protected loadingService: LoadingService,
+    private errorHandlerService: ErrorHandlerService
   ) {
-    this.categoryName = '';
+    this.categoryForm = this.fb.group({
+      name: ['', Validators.required],
+    });
   }
 
-  onAdd() {
-    this.loadingService.loadingOn();
-    this.categoryService
-      .createCategory({ name: this.categoryName })
-      .pipe(take(1), catchError(this.handleError.bind(this)))
-      .subscribe(() => {
-        this.notificationService.open('Categoria adicionada com sucesso!', 'SUCCESS');
-        this.loadingService.loadingOff();
-        this.router.navigate(['categorias', 'lista']);
+  ngOnInit(): void {
+    this.categoryForm
+      .get('name')
+      ?.statusChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((status) => {
+        this.isSubmitAvailable = status === 'VALID';
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      console.error('An error occurred:', error.error);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, body was: `,
-        error.error
-      );
-    }
-
-    this.notificationService.open('Ocorreu um erro na criação da categoria', 'ERROR');
-
-    this.loadingService.loadingOff();
-
-    return throwError(
-      () => new Error('Something bad happened; please try again later.')
-    );
+  onSubmit() {
+    this.loadingService.loadingOn();
+    this.categoryService
+      .createCategory({ name: this.categoryForm.get('name')?.value })
+      .pipe(
+        take(1),
+        catchError((error) => this.errorHandlerService.handleError(error))
+      )
+      .subscribe({
+        next: () => {
+          this.notificationService.open(
+            'Categoria adicionada com sucesso!',
+            'SUCCESS'
+          );
+          this.router.navigate(['categorias', 'lista']);
+        },
+        complete: () => this.loadingService.loadingOff(),
+      });
   }
 }
