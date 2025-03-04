@@ -13,7 +13,14 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { catchError, take, Subject, takeUntil, BehaviorSubject, shareReplay } from 'rxjs';
+import {
+  catchError,
+  take,
+  Subject,
+  takeUntil,
+  BehaviorSubject,
+  shareReplay,
+} from 'rxjs';
 import { NotificationService } from '@services/notification.service';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { LoadingService } from '@services/loading.service';
@@ -58,14 +65,11 @@ export class CategoriasListaComponent
     this.loadingService.loadingOn();
     this.categoryService
       .getCategories()
-      .pipe(
-        shareReplay(1),
-        takeUntil(this.destroy$),
-      )
+      .pipe(shareReplay(1), takeUntil(this.destroy$))
       .subscribe((categories) => {
         this.loadingService.loadingOff();
         this.categoriesSubject.next(categories);
-        this.dataSource.data = categories;
+        this.updateDataSource();
 
         this.isListEmpty = this.categoriesSubject.value.length <= 0;
       });
@@ -86,7 +90,9 @@ export class CategoriasListaComponent
       )
       .subscribe(() => {
         this.loadingService.loadingOff();
-        this.categoriesSubject.next(this.categoriesSubject.value.filter(e => e.id !== id));
+        this.categoriesSubject.next(
+          this.categoriesSubject.value.filter((e) => e.id !== id)
+        );
         this.updateDataSource();
         this.categoryService.refreshCategories();
         this.notificationService.open(
@@ -102,6 +108,8 @@ export class CategoriasListaComponent
 
   private updateDataSource(): void {
     this.dataSource.data = this.categoriesSubject.value;
-    this.dataSource.sort = this.sort;
+    setTimeout(() => {
+      this.dataSource.sort = this.sort;
+    }, 2000);
   }
 }

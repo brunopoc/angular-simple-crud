@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { NotfoundComponent } from './notfound/notfound.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,5 +15,9 @@ export const routes: Routes = [
     path: 'categorias',
     loadChildren: () =>
       import('./categorias/categorias.routes').then((r) => r.CATEGORIAS),
+  },
+  {
+    path: '**',
+    component: NotfoundComponent,
   },
 ];

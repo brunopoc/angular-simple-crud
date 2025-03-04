@@ -4,11 +4,32 @@
   bottom: 1rem;
 }
 
+.mat-mdc-cell {
+  padding: .4rem;
+}
+
 .mat-column-action {
-  max-width: 6rem;
+  max-width: 4rem;
   text-align: center;
   font-weight: bold;
+
+  @media (min-width: 768px) {
+    max-width: 6rem;
+  }
 }
+
+.mat-column-value {
+  max-width: 6rem;
+}
+
+.mat-column-categoriaNome, .mat-column-date {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
+}
+
 
 .gastos-pessoais-lista {
   &__error {

@@ -43,11 +43,14 @@
       <mat-form-field data-test-id="gastos-pessoais-adicionar-valor-field">
         <input
           matInput
-          type="number"
+          type="text"
           placeholder="Valor do Gasto"
-          formControlName="value"
+          formControlName="expenseAmount"
           data-test-id="gastos-pessoais-adicionar-valor-input"
-          [value]="gastosPessoaisForm.get('value')?.value"
+          mask="separator.2"
+          thousandSeparator="."
+          decimalMarker=","
+          prefix="R$ "
         />
       </mat-form-field>
 

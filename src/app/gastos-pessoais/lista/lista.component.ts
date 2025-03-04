@@ -116,8 +116,8 @@ export class GastosPessoaisListaComponent
           }
         );
 
-        this.dataSource.data = lancamentosExibicao;
         this.gastosPessoaisSubject.next(lancamentosExibicao);
+        this.updateDataSource();
       });
   }
 
@@ -153,6 +153,8 @@ export class GastosPessoaisListaComponent
 
   private updateDataSource(): void {
     this.dataSource.data = this.gastosPessoaisSubject.value;
-    this.dataSource.sort = this.sort;
+    setTimeout(() => {
+      this.dataSource.sort = this.sort;
+    });
   }
 }

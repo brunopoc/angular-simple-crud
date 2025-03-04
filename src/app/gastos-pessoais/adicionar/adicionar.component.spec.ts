@@ -114,7 +114,7 @@ describe('GastosPessoaisAdicionarComponent', () => {
       idCategoria: '1',
       description: 'Teste',
       date: new Date().toISOString(),
-      value: 50,
+      expenseAmount: 50,
     });
     fixture.detectChanges();
 
@@ -131,7 +131,7 @@ describe('GastosPessoaisAdicionarComponent', () => {
       idCategoria: '1',
       description: 'Teste',
       date: new Date().toISOString(),
-      value: 50,
+      expenseAmount: 50,
     });
     fixture.detectChanges();
 
@@ -166,7 +166,7 @@ describe('GastosPessoaisAdicionarComponent', () => {
       idCategoria: '1',
       description: 'Teste',
       date: new Date().toISOString(),
-      value: 50,
+      expenseAmount: 50,
     });
     fixture.detectChanges();
 

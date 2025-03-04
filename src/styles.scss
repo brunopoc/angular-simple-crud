@@ -1,44 +1,186 @@
 @use "@angular/material" as mat;
+@use "./_theme-colors" as my-theme;
 
 html {
-  color-scheme: light dark;
+  color-scheme: light;
   @include mat.theme(
     (
-      color: mat.$violet-palette,
+      color: (
+        primary: my-theme.$primary-palette,
+        tertiary: my-theme.$tertiary-palette,
+      ),
       typography: Roboto,
       density: 0,
     )
   );
 }
 
-body {
-  background: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-}
-
-a {
-  text-decoration: none;
-}
-
-:host {
-  background: var(--mat-sys-primary-container);
-  color: var(--mat-sys-on-primary-container);
-  border: 1px solid var(--mat-sys-outline-variant);
-  font: var(--mat-sys-body-large);
-}
-
 :root {
+  @include mat.card-overrides(
+    (
+      subtitle-text-color: orange,
+      elevated-container-color: #ffffff,
+    )
+  );
+
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: #ff6600,
+      container-text-color: #ffffff,
+    )
+  );
+
   .notification-bg {
     &__success {
-      --mdc-snackbar-container-color: green;
-      --mdc-snackbar-supporting-text-color: white;
-      --mat-snack-bar-button-color: white;
+      @include mat.snack-bar-overrides(
+        (
+          container-color: green,
+          supporting-text-color: white,
+          button-color: white,
+        )
+      );
     }
 
     &__error {
-      --mdc-snackbar-container-color: red;
-      --mdc-snackbar-supporting-text-color: white;
-      --mat-snack-bar-button-color: white;
+      @include mat.snack-bar-overrides(
+        (
+          container-color: red,
+          supporting-text-color: white,
+        )
+      );
     }
   }
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section {
+  display: block;
+}
+/* HTML5 hidden-attribute fix for newer browsers */
+*[hidden] {
+  display: none;
+}
+body {
+  line-height: 1;
+}
+menu {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+a {
+  text-decoration: none;
 }

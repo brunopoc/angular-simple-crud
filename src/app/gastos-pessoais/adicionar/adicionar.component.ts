@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { catchError, take, Subject, takeUntil, BehaviorSubject } from 'rxjs';
 import { LoadingService } from '@services/loading.service';
 import { Router } from '@angular/router';
@@ -22,6 +23,19 @@ import {
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { Category } from '@models/category.model';
 import { CategoryService } from '@services/category.service';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
+const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-gastos-pessoais-adicionar',
@@ -39,7 +53,9 @@ import { CategoryService } from '@services/category.service';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatSelectModule,
+    NgxMaskDirective,
   ],
+  providers: [provideMomentDateAdapter(MY_DATE_FORMATS), provideNgxMask()],
 })
 export class GastosPessoaisAdicionarComponent implements OnInit, OnDestroy {
   private categoriesSubject = new BehaviorSubject<Category[]>([]);
@@ -62,7 +78,7 @@ export class GastosPessoaisAdicionarComponent implements OnInit, OnDestroy {
       idCategoria: ['', Validators.required],
       description: ['', Validators.required],
       date: [null, Validators.required],
-      value: [0, [Validators.required, Validators.min(0)]],
+      expenseAmount: ['', [Validators.required, Validators.min(0)]],
     });
   }
 
@@ -99,12 +115,15 @@ export class GastosPessoaisAdicionarComponent implements OnInit, OnDestroy {
       ? formatDate(dateValue, 'dd/MM/yyyy', 'en-US')
       : '';
 
+    const rawValue = this.gastosPessoaisForm.get('expenseAmount')?.value;
+    const numericValue = rawValue === 'string'? Number(rawValue.replace(/\./g, '').replace(',', '.')): rawValue;
+
     this.gastosPessoaisService
       .createLancamento({
         idCategoria: this.gastosPessoaisForm.get('idCategoria')?.value,
         description: this.gastosPessoaisForm.get('description')?.value,
         date: formattedDate,
-        value: this.gastosPessoaisForm.get('value')?.value,
+        value: numericValue,
       })
       .pipe(
         take(1),
